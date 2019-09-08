@@ -1,0 +1,24 @@
+FROM centos:7
+MAINTAINER wangxin
+WORKDIR /usr/local/src
+COPY apache-tomcat-6.0.53.tar.gz /usr/local/src/apache-tomcat-6.0.53.tar.gz
+RUN curl -o /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-7.repo
+COPY jdk-6u45-linux-x64.bin /usr/local/src/jdk-6u45-linux-x64.bin
+RUN ./jdk-6u45-linux-x64.bin
+RUN mv jdk1.6.0_45 /usr/local/
+RUN yum -y install gcc gcc-c++ make
+RUN tar -zxf apache-tomcat-6.0.53.tar.gz
+RUN mv apache-tomcat-6.0.53 /usr/local/tomcat
+RUN ln -s /usr/local/tomcat /tomcat
+COPY cronolog-1.6.2.tar.gz /usr/local/src/cronolog-1.6.2.tar.gz
+RUN tar -zxf cronolog-1.6.2.tar.gz
+WORKDIR /usr/local/src/cronolog-1.6.2
+RUN ./configure && make && make install
+RUN /bin/cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
+    && echo 'Asia/Shanghai' >/etc/timezone 
+ENV JAVA_HOME=/usr/local/jdk1.6.0_45
+ENV JAVA_BIN=/usr/local/jdk1.6.0_45/bin
+ENV JRE_HOME=$JAVA_HOME/jre
+ENV PATH=$JAVA_HOME/bin:$JRE_HOME/bin:$PATH
+ENV LASSPATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar:$JRE_HOME/lib
+CMD /usr/local/tomcat/bin/catalina.sh run
