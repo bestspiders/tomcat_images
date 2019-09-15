@@ -8,3 +8,13 @@ complete example:
 docker run -itd  -v logs:/usr/local/tomcat/logs -v conf/server.xml:/usr/local/tomcat/conf/server.xml -v webapps:/usr/local/tomcat/webapps --name tocmat tocmat:6.53
 ```
 **注意:dockerfile里需要通外网yum安装一些依赖包,增加代理方法ENV http_proxy="http://xxxx"**
+# tomcat7_images
+eg:
+```
+docker build -f ./tomcat-7.0.96/dockerfile -t tocmat:7.0.96 ./tomcat-7.0.96/
+simple example:
+docker run -itd tocmat:7.0.96
+complete example:
+docker run -itd  -v logs:/usr/local/tomcat/logs -v conf/server.xml:/usr/local/tomcat/conf/server.xml -v webapps:/usr/local/tomcat/webapps --name tocmat tocmat:7.0.96
+```
+**注意:dockerfile里需要通外网yum安装一些依赖包,增加代理方法ENV http_proxy="http://xxxx"**
